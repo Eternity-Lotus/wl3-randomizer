@@ -36,7 +36,7 @@ public class Main {
 
     private static GUI gui;
 
-    private static final String VERSION = "v0.12.0-RC4";
+    private static final String VERSION = "v0.12.0-RC5";
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
@@ -2406,22 +2406,31 @@ public class Main {
                 }
             }
             else if (region == 0x5) {
+				// New way to access this in MINOR GLITCHES.
+				// If you have Red Overalls, you can perform Quaking Block clips to break the necessary blocks to reach the Night Ruins without needing Garlic.
                 return canSuperGP(inventory)
-                        && ((difficulty > Difficulty.EASY && inventory.contains(Items.JUMP_BOOTS))
-                            || canLift(inventory))
-                        && (!daytime || inventory.contains(Items.GARLIC));
+                    && ((difficulty > Difficulty.EASY && inventory.contains(Items.JUMP_BOOTS))
+                        || canLift(inventory))
+                    && (!daytime || inventory.contains(Items.GARLIC) || difficulty >= Difficulty.S_HARD);
             }
             else if (region == 0x6) {
                 if (location == 0) {
+					// New way to access Night Ruins - Between Upper Pipes in MINOR GLITCHES.
+					// If you have Red Overalls, you can perform Quaking Block clips to break the necessary blocks to reach this check without needing Garlic.
                     return inventory.contains(Items.GARLIC)
-                            || (!daytime && inventory.contains(Items.SPIKED_HELMET) && canGP(inventory));
+                        || (!daytime && inventory.contains(Items.SPIKED_HELMET) && canGP(inventory))
+						|| (difficulty >= Difficulty.S_HARD && canSuperGP(inventory));
                 }
                 else {
-                    return canSuperGP(inventory) && canLift(inventory) && (!daytime || inventory.contains(Items.GARLIC));
+					// New way to access Night Ruins - Behind Lower Left Pipes in MINOR GLITCHES.
+					// If you have Red Overalls, you can perform Quaking Block clips to break the necessary blocks to reach the Night Ruins without needing Garlic.
+                    return canSuperGP(inventory) && canLift(inventory) && (!daytime || inventory.contains(Items.GARLIC) || difficulty >= Difficulty.S_HARD);
                 }
             }
             else if (region == 0x8) {
-                if (!daytime && !inventory.contains(Items.GARLIC)) {
+				// New way to access the Day Ruins in MINOR GLITCHES or above.
+				// If you have Red Overalls, you can perform Quaking Block clips to break the necessary blocks to reach the Day Ruins without needing Garlic.
+                if ((!daytime && !inventory.contains(Items.GARLIC)) || (difficulty < Difficulty.S_HARD && !canSuperGP(inventory))) {
                     return false;
                 }
                 else if (location == 0) {
@@ -2442,10 +2451,12 @@ public class Main {
                 return true;
             }
             else if (region == 0x18) {
+				// New way to access this in MINOR GLITCHES.
+				// If you have Red Overalls, you can perform Quaking Block clips to break the necessary blocks to reach the Night Ruins without needing Garlic.
                 return canSuperGP(inventory)
-                        && (canLift(inventory)
-                            || (difficulty > Difficulty.EASY && inventory.contains(Items.JUMP_BOOTS)))
-                        && (!daytime || inventory.contains(Items.GARLIC));
+                    && (canLift(inventory)
+                        || (difficulty > Difficulty.EASY && inventory.contains(Items.JUMP_BOOTS)))
+                    && (!daytime || inventory.contains(Items.GARLIC) || difficulty >= Difficulty.S_HARD);
             }
         }
         else if (level.equals("W2")) {
@@ -2857,13 +2868,17 @@ public class Main {
             else if (region == 0x19) {
 
                 if (location == 0) { // S2 Spiders Upper Right
+					// New way to access this in MINOR GLITCHES.
+					// If you have Red Overalls, you can perform Quaking Block clips to break the necessary blocks without needing Garlic.
                     return (canSwim(inventory) || (difficulty >= Difficulty.S_HARD && canLift(inventory) && inventory.contains(Items.JUMP_BOOTS)))
-                        && (inventory.contains(Items.GARLIC) || (difficulty >= Difficulty.S_HARD && inventory.contains(Items.JUMP_BOOTS)))
+                        && (inventory.contains(Items.GARLIC) || (difficulty >= Difficulty.S_HARD && (canSuperGP(inventory) || inventory.contains(Items.JUMP_BOOTS))))
 		            && (canSuperGP(inventory) || (difficulty >= Difficulty.HARD && inventory.contains(Items.JUMP_BOOTS)));
                 }
                 else { // S2 Spiders Lower Right
+					// New way to access this in MINOR GLITCHES.
+					// If you have Red Overalls, you can perform Quaking Block clips to break the necessary blocks without needing Garlic.
                     return (canSwim(inventory) || (difficulty >= Difficulty.S_HARD && inventory.contains(Items.JUMP_BOOTS) && canLift(inventory)))
-		            && (inventory.contains(Items.GARLIC) || (difficulty >= Difficulty.S_HARD && inventory.contains(Items.JUMP_BOOTS)));
+		            && (inventory.contains(Items.GARLIC) || (difficulty >= Difficulty.S_HARD && (canSuperGP(inventory) || inventory.contains(Items.JUMP_BOOTS))));
                 }
             }
         }
@@ -3195,7 +3210,10 @@ public class Main {
 							|| difficulty >= Difficulty.S_HARD);
             }
             else if (region == 0x14) {
-                return inventory.contains(Items.GARLIC) && canLift(inventory);
+				// New MINOR GLITCHES Logic for Small Throw Block Room - Lower.
+				// Perform Quaking Block clips to break the solid blocks necessary and gain access to the room without needing Garlic.
+                return canLift(inventory)
+					&& (inventory.contains(Items.GARLIC) || (difficulty >= Difficulty.S_HARD && canSuperGP(inventory)));
             }
             else if (region == 0x1B) {
                 if (location == 1) {
@@ -3331,8 +3349,9 @@ public class Main {
         }
         else if (level.equals("E7")) {
             if (region == 0x1) {
+				// NORMAL Logic for Main Area - Upper Center: it only takes a precise jump to obtain this check if it contains a key, due to a key's bigger hitbox.
                 if (location == 0) {
-                    return inventory.contains(Items.JUMP_BOOTS);
+                    return inventory.contains(Items.JUMP_BOOTS) || difficulty > Difficulty.EASY;
                 }
                 else {
                     return true;

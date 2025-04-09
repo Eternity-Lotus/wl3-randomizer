@@ -1572,21 +1572,34 @@ public class Main {
                     && inventory.contains(Items.NIGHT_VISION_GOGGLES);
         }
         else if (location.equals("W1S")) {
-            return canAccess("W1", inventory) && (dayOnly || inventory.contains(Items.GARLIC));
+			// New way to access this in MINOR GLITCHES.
+			// If you have Red Overalls, you can perform Quaking Block clips to break the necessary blocks to reach the Day Ruins at night without needing Garlic.
+            return canAccess("W1", inventory) 
+				&& (dayOnly || inventory.contains(Items.GARLIC)
+					|| (difficulty >= Difficulty.S_HARD && canSuperGP(inventory)));
         }
         else if (location.equals("W1R")) {
-            return canAccess("W1", inventory) && (!dayOnly || inventory.contains(Items.GARLIC));
+			// New way to access this in MINOR GLITCHES.
+			// If you have Red Overalls, you can perform Quaking Block clips to break the necessary blocks to reach the Night Ruins during the day without needing Garlic.
+            return canAccess("W1", inventory)
+				&& (!dayOnly || inventory.contains(Items.GARLIC)
+					|| (difficulty >= Difficulty.S_HARD && canSuperGP(inventory)));
         }
         else if (location.equals("W1G")) {
+			// New way to access this in MINOR GLITCHES.
+			// If you have Red Overalls, you can perform Quaking Block clips to break the necessary blocks to reach the Night Ruins during the day without needing Garlic.
             return canAccess("W1", inventory)
-                    && inventory.contains(Items.SPIKED_HELMET)
-                    && (!dayOnly || inventory.contains(Items.GARLIC));
+                && inventory.contains(Items.SPIKED_HELMET)
+                && (!dayOnly || inventory.contains(Items.GARLIC)
+					|| (difficulty >= Difficulty.S_HARD && canSuperGP(inventory)));
         }
         else if (location.equals("W1B")) {
+			// New way to access this in MINOR GLITCHES.
+			// If you have Red Overalls, you can perform Quaking Block clips to break the necessary blocks to reach the Night Ruins during the day without needing Garlic.
             return canAccess("W1", inventory)
                     && canSuperGP(inventory)
                     && (canLift(inventory) || (difficulty > Difficulty.EASY && inventory.contains(Items.JUMP_BOOTS)))
-                    && (!dayOnly || inventory.contains(Items.GARLIC));
+                    && (!dayOnly || inventory.contains(Items.GARLIC) || difficulty >= Difficulty.S_HARD);
         }
         else if (location.equals("W2S")) {
             return canAccess("W2", inventory);
